@@ -1,36 +1,80 @@
 #include <iostream>
-#include <cstdint>
 #include <list>
-#include <unordered_map>
 
-// The hash table size. This should be a prime number for best performance.
-const int TABLE_SIZE = 30;
+class HashTable {
+    // number of buckets (indices)
+	int NUM_BUCKETS;
 
-// The hash function.
-// It takes in a hash code and outputs the index in which the data will be stored.
-uint64_t hashFunction(uint64_t hashCode) {
-  return hashCode % TABLE_SIZE;
+	// pointer to a linked list of buckets and values
+	std::list<int> *table;
+public:
+    // constructor
+	HashTable(int V);
+
+	// inserts key (x) into hash table
+	void insert(int x);
+
+	// hash function
+	int hashFunction(int x) {
+		return (x % NUM_BUCKETS);
+	}
+
+    // prints contents of the hash table
+	void printTable();
+};
+
+HashTable::HashTable(int b) {
+	this->NUM_BUCKETS = b;
+	table = new std::list<int>[NUM_BUCKETS];
 }
 
-// The hash table.
-std::unordered_map<uint64_t, std::list<int>> table;
+void HashTable::insert(int key) {
+	int i = hashFunction(key);
+	table[i].push_back(key);
+}
+
+void HashTable::printTable() {
+    for (int i = 0; i < NUM_BUCKETS; i++) {
+        std::cout << "key: " << i << " - value(s): ";
+        for (auto x : table[i]) {
+            std::cout << x << " ";
+        }
+        std::cout << std::endl;
+    }
+}
 
 int main() {
-    // Collision case
-    // Array containing values to input into the hashFunction
-    int a[] = {11, 15, 6, 12, 22, 8, 4, 13, 17, 9, 20};
-    // Loop to print the indices and their values
-    for (int i : a) {
-        std::cout << "index: " << hashFunction(a[i]) << " value: " << a[i] << std::endl;
+    /* Collision Case */
+    // array with keys to be intputted into hash table
+    int a[] = {11, 34, 23, 45, 6, 12, 10, 4, 14, 7, 18};
+    int n1 = sizeof(a)/sizeof(a[0]);
+
+    // insert keys into the hash table
+    HashTable h1(5);
+    for (int i = 0; i < n1; i++) {
+        h1.insert(a[i]);
     }
 
-    // Non-Collision Case
-    // Array containing values to input into the hashFunction
+    std::cout << "Collision Case Output:" << std::endl;
+    // print contents of table
+    h1.printTable();
+    std::cout << std::endl;
+
+    /* Non-Collision Case */
+    // array with values to be intputted into hash table
     int b[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-    // Loop to print the indices and their values
-    for (int i : b) {
-        std::cout << "index: " << hashFunction(b[i]) << " value: " << b[i] << std::endl;
+    int n2 = sizeof(b)/sizeof(b[0]);
+
+    // insert the keys into the hash table
+    HashTable h2(11);
+    for (int i = 0; i < n2; i++) {
+        h2.insert(b[i]);
     }
+
+    std::cout << "Non-Collision Case Output:" << std::endl;
+    // print contents of hash table
+    h2.printTable();
+    std::cout << std::endl;
 
     return 0;
 }
