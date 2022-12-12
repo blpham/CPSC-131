@@ -9,13 +9,13 @@ class HashTable {
 	std::list<int> *table;
 public:
     // constructor
-	HashTable(int V);
+	HashTable(int buckets);
 
 	// inserts key (x) into hash table
 	void insert(int x);
 
 	// hash function
-	int hashFunction(int x) {
+	uint_64 hashFunction(uint_64 x) {
 		return (x % NUM_BUCKETS);
 	}
 
@@ -29,7 +29,7 @@ HashTable::HashTable(int b) {
 }
 
 void HashTable::insert(int key) {
-	int i = hashFunction(key);
+	uint_64 i = hashFunction(key);
 	table[i].push_back(key);
 }
 
@@ -46,7 +46,7 @@ void HashTable::printTable() {
 int main() {
     /* Collision Case */
     // array with keys to be intputted into hash table
-    int a[] = {11, 34, 23, 45, 6, 12, 10, 4, 14, 7, 18};
+    uint_64 a[] = {11, 34, 23, 45, 6, 12, 10, 4, 14, 7, 18};
     int n1 = sizeof(a)/sizeof(a[0]);
 
     // insert keys into the hash table
@@ -62,7 +62,7 @@ int main() {
 
     /* Non-Collision Case */
     // array with values to be intputted into hash table
-    int b[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    uint_64 b[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     int n2 = sizeof(b)/sizeof(b[0]);
 
     // insert the keys into the hash table
